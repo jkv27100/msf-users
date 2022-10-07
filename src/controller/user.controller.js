@@ -11,10 +11,13 @@ const createUser = async (req, res) => {
 
   if (isExisting) return res.status(400).send("user already exists");
 
-  const newUser = await User.create({ ...userDetails });
-
-  if (newUser) return res.status(200).send("User Created successfully");
-  else res.status(400).send("Error creating User...");
+  try {
+    const newUser = await User.create({ ...userDetails });
+    if (newUser) return res.status(200).send("User Created successfully");
+    else res.status(400).send("Error creating User...");
+  } catch (error) {
+    res.status(200).send(`Could not create user. Check fields`);
+  }
 };
 
 const updateUser = async (req, res) => {
